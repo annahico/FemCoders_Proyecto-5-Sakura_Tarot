@@ -48,8 +48,7 @@ export function HistoryPage() {
 
   return (
     <div
-      className="min-h-screen w-full flex flex-col items-center bg-cover bg-center p-4 md:p-10"
-      style={{ backgroundImage: "url('/ebeeaf4c-022f-401d-a7fa-62eb2ed7f2e9.png')" }}
+      className="min-h-screen w-full flex flex-col items-center p-4 md:p-10"
     >
       {alertMessage && <AlertDisplay message={alertMessage} />}
       <div className="w-full max-w-6xl rounded-3xl bg-white/40 backdrop-blur-xl shadow-2xl p-6 md:p-10 overflow-y-auto max-h-[90vh]">

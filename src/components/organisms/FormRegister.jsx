@@ -63,7 +63,7 @@ export const FormRegister = () => {
         <FormLogin /> 
       ) : (
         <Activity mode="visible">
-          <div className="bg-[#fde8EE] z-20 rounded-2xl px-10 py-5 flex flex-col relative shadow-xl">
+          <div className="bg-[#fde8EE] w-[90vw] max-w-sm z-20 rounded-2xl px-6 sm:px-10 py-5 flex flex-col relative shadow-xl">
             <a onClick={handleClick} className="inline-flex items-center font-medium text-[#551A8B] hover:underline cursor-pointer">
               Iniciar Session
             </a>

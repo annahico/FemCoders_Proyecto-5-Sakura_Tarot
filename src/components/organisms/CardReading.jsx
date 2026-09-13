@@ -36,11 +36,11 @@ export const CardReading = () => {
   if (!deck || deck.length === 0) return <p className="text-[#880E4F]">No se pudo cargar el mazo. Inténtalo de nuevo más tarde.</p>;
 
   return (
-    <div className="w-full max-w-6xl flex flex-col items-center gap-12 relative">
-      
-      <div className="w-full flex justify-end px-10">
-        <button 
-          onClick={() => navigate('/')} 
+    <div className="w-full max-w-6xl flex flex-col items-center gap-8 md:gap-12 relative px-2 sm:px-4">
+
+      <div className="w-full flex justify-end px-2 sm:px-6 md:px-10">
+        <button
+          onClick={() => navigate('/')}
           className="bg-white/40 p-3 rounded-full text-2xl hover:scale-125 transition-transform shadow-lg border border-white/50"
           title="Volver al Inicio"
         >
@@ -48,12 +48,12 @@ export const CardReading = () => {
         </button>
       </div>
 
-      <div className="bg-white/10 backdrop-blur-md rounded-[40px] p-10 border border-white/20 shadow-2xl w-full">
+      <div className="bg-white/10 backdrop-blur-md rounded-[40px] p-4 sm:p-6 md:p-10 border border-white/20 shadow-2xl w-full">
         <p className="text-[#880E4F] mb-8 text-center font-medium italic">
           Elige 3 cartas para conocer tu destino:
         </p>
 
-        <div className="grid grid-cols-5 gap-x-6 gap-y-10 justify-items-center max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-3 sm:gap-x-4 md:gap-x-6 gap-y-6 sm:gap-y-8 md:gap-y-10 justify-items-center max-w-4xl mx-auto">
           {deck.slice(0, 10).map((card) => (
             <div
               key={card.id}
@@ -69,11 +69,11 @@ export const CardReading = () => {
           ))}
         </div>
 
-        <div className="flex justify-center items-center mt-10 gap-6"> 
+        <div className="flex flex-wrap justify-center items-center mt-10 gap-4 sm:gap-6">
           <button
             onClick={revealReading}
             disabled={selectedCards.length < 3 && !isRevealed}
-            className={`px-10 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border
+            className={`px-6 sm:px-8 md:px-10 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border
               ${(selectedCards.length === 3 || isRevealed)
                 ? 'bg-[#F48FB1]/40 border-[#880E4F]/30 text-[#880E4F] hover:bg-[#F48FB1]/60'
                 : 'bg-gray-300/20 border-gray-400/30 text-gray-500 cursor-not-allowed'}`}
@@ -83,7 +83,7 @@ export const CardReading = () => {
 
           <button
             onClick={() => navigate('/history')}
-            className="px-8 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-[#880E4F]/30 bg-white/10 text-[#880E4F] hover:bg-white/30 flex items-center gap-2 shadow-sm"
+            className="px-6 sm:px-8 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-[#880E4F]/30 bg-white/10 text-[#880E4F] hover:bg-white/30 flex items-center gap-2 shadow-sm"
           >
             📜 Historial
           </button>
@@ -91,12 +91,12 @@ export const CardReading = () => {
       </div>
 
       {isRevealed && selectedCards.length === 3 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-10 animate-fade-in pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 w-full mt-10 animate-fade-in pb-20">
           {['past', 'present', 'future'].map((tiempo, index) => {
             const card = selectedCards[index];
             const labels = { past: 'Pasado', present: 'Presente', future: 'Futuro' };
             return (
-              <div key={tiempo} className="bg-white/15 backdrop-blur-xl p-8 rounded-t-[120px] border-t border-x border-white/40 flex flex-col items-center shadow-lg">
+              <div key={tiempo} className="bg-white/15 backdrop-blur-xl p-5 sm:p-6 md:p-8 rounded-t-[80px] sm:rounded-t-[100px] md:rounded-t-[120px] border-t border-x border-white/40 flex flex-col items-center shadow-lg">
                 <span className="text-[#880E4F] text-xs uppercase tracking-[0.3em] mb-8 font-semibold">
                   ✦ {labels[tiempo]}
                 </span>

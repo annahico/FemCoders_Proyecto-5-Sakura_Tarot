@@ -55,7 +55,7 @@ export const FormLogin = () => {
   return (
     <>
       {alertMessage && <AlertDisplay message={alertMessage} />}
-      <div className="bg-[#fde8EE] w-fit z-30 rounded-2xl px-10 py-5 flex flex-col items-center relative shadow-xl">
+      <div className="bg-[#fde8EE] w-[90vw] max-w-sm z-30 rounded-2xl px-6 sm:px-10 py-5 flex flex-col items-center relative shadow-xl">
         <h1 className="text-[#6a4a4a] text-2xl font-semibold p-2">Bienvenida</h1>
         <form onSubmit={handleSubmit}>
           <FormInputsLogIn form={form} handleChange={handleChange} />
