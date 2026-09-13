@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import { TarotContext } from '../context/TarotContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { readingApi } from '../services/readingApi';
+
+const readings = readingApi();
 
 export function HistoryPage() {
   const { history, setHistory } = useContext(TarotContext);
   const navigate = useNavigate();
-  const url = "http://localhost:3000/readings";
 
   const handleDeleteOne = async (id) => {
     try {
-      await axios.delete(`${url}/${id}`);
+      await readings.deleteReading(id);
       setHistory(prev => prev.filter(item => item.id !== id));
       alert("Lectura eliminada");
     } catch (error) {
@@ -21,9 +22,8 @@ export function HistoryPage() {
   const handleClearAll = async () => {
     if (window.confirm("¿Estás seguro de que quieres borrar todo el historial?")) {
       try {
-        for (let item of history) {
-          await axios.delete(`${url}/${item.id}`);
-        }
+        const deletePromises = history.map((item) => readings.deleteReading(item.id));
+        await Promise.allSettled(deletePromises);
         setHistory([]);
       } catch (error) {
         console.error("Error al limpiar historial:", error);

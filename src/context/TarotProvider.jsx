@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TarotContext } from './TarotContext';
 import { sakuraApi } from '../services/sakuraApi';
+import { readingApi } from '../services/readingApi';
 import axios from 'axios';
+import { API_BASE_URL } from '../services/apiConfig';
 
 const api = sakuraApi();
-const url = "http://localhost:3000/readings"; 
+const readings = readingApi();
+const url = `${API_BASE_URL}/readings`;
 
 export const TarotProvider = ({ children }) => {
     const [deck, setDeck] = useState([]);
@@ -47,22 +50,15 @@ export const TarotProvider = ({ children }) => {
 
     const saveReading = async (userId, username) => {
         try {
-            const newReading = {
-                userId,
-                username,
-                date: new Date().toLocaleString('es-ES', { 
-                    day: 'numeric', month: 'long', year: 'numeric' 
-                }),
-                cards: {
-                    past: selectedCards[0],
-                    present: selectedCards[1],
-                    future: selectedCards[2]
-                }
+            const cards = {
+                past: selectedCards[0],
+                present: selectedCards[1],
+                future: selectedCards[2]
             };
-            const response = await axios.post(url, newReading);
-            setHistory(prev => [...prev, response.data]);
+            const savedReading = await readings.saveReading(userId, username, cards);
+            setHistory(prev => [...prev, savedReading]);
             alert("✨ Lectura guardada en el historial mágico");
-            return response.data;
+            return savedReading;
         } catch (error) {
             console.error("Error en saveReading:", error.message);
             throw error;

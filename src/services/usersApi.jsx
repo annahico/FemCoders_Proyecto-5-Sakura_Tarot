@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "./apiConfig";
 
 export const usersApi = () => {
-  const url = "http://localhost:3000/users";
+  const url = `${API_BASE_URL}/users`;
 
   const createReadableDate = () => {
     const now = new Date();

@@ -2,7 +2,7 @@ import { Button } from "../atoms/Button";
 import { FormInputsLogIn } from "../molecules/FormInputs";
 import { useEffect, useState } from "react";
 import { usersApi } from "../../services/usersApi";
-import { AlertDisplay } from "../molecules/alertDisplay";
+import { AlertDisplay } from "../molecules/AlertDisplay";
 import { useNavigate } from "react-router-dom";
 
 export const FormLogin = () => { 
