@@ -1,5 +1,6 @@
 import axios from "axios";
 import { APP_API_URL } from "./apiConfig";
+import { generateSalt, hashPassword } from "../utils/passwordHash";
 
 export const usersApi = () => {
   const url = `${APP_API_URL}/users`;
@@ -13,17 +14,21 @@ export const usersApi = () => {
     });
   };
 
-  const createUserObject = (userData, createdAt) => {
+  const createUserObject = async (userData, createdAt) => {
+    const salt = generateSalt();
+    const passwordHash = await hashPassword(userData.password, salt);
     return {
       username: userData.username,
       email: userData.email,
-      password: userData.password,
+      passwordHash,
+      salt,
       createdAt: createdAt,
     };
   };
 
-  const verifyPassword = (inputPassword, storedPassword) => {
-    return inputPassword === storedPassword;
+  const verifyPassword = async (inputPassword, user) => {
+    const inputHash = await hashPassword(inputPassword, user.salt);
+    return inputHash === user.passwordHash;
   };
 
   const getUserByEmail = async (email) => {
@@ -54,7 +59,7 @@ export const usersApi = () => {
         throw new Error("Usuario no encontrado");
       }
 
-      const isPasswordValid = verifyPassword(password, user.password);
+      const isPasswordValid = await verifyPassword(password, user);
 
       if (!isPasswordValid) {
         throw new Error("Contraseña incorrecta");
@@ -76,7 +81,7 @@ export const usersApi = () => {
       }
 
       const readableDate = createReadableDate();
-      const newUser = createUserObject(userData, readableDate);
+      const newUser = await createUserObject(userData, readableDate);
       const response = await axios.post(url, newUser);
 
       return response.data;
