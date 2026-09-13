@@ -5,6 +5,7 @@ import { HomePage } from "../pages/HomePage";
 import { TarotPage } from "../pages/TarotPage";
 import { FormPage } from "../pages/FormPage";
 import { HistoryPage } from "../pages/HistoryPage";
+import { NotFoundPage } from "../pages/NotFoundPage";
 import { RequireAuth } from "./RequireAuth";
 
 const getSessionKey = () => {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "history",
         element: <RequireAuth><HistoryPage /></RequireAuth>
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />
       },
     ],
   },
