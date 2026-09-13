@@ -52,7 +52,7 @@ export const CardReading = () => {
           onClick={() => navigate('/')}
           aria-label="Volver al Inicio"
           title="Volver al Inicio"
-          className="bg-white/40 p-3 rounded-full text-2xl hover:scale-125 transition-transform shadow-lg border border-white/50"
+          className="bg-white/90 p-4 rounded-full text-3xl hover:scale-110 transition-transform shadow-lg border-2 border-white/70"
         >
           ⭐
         </button>
@@ -83,17 +83,17 @@ export const CardReading = () => {
           <button
             onClick={revealReading}
             disabled={selectedCards.length < 3 && !isRevealed}
-            className={`px-6 sm:px-8 md:px-10 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border
+            className={`px-8 sm:px-10 md:px-12 py-3 sm:py-3.5 rounded-full uppercase text-sm sm:text-base font-semibold tracking-wide transition-all border-2 shadow-md
               ${(selectedCards.length === 3 || isRevealed)
-                ? 'bg-[#F48FB1]/40 border-[#880E4F]/30 text-[#880E4F] hover:bg-[#F48FB1]/60'
-                : 'bg-gray-300/20 border-gray-400/30 text-gray-500 cursor-not-allowed'}`}
+                ? 'bg-[#880E4F] border-[#880E4F] text-white hover:bg-[#6d0b3e]'
+                : 'bg-gray-300 border-gray-300 text-gray-700 cursor-not-allowed'}`}
           >
             {isRevealed ? 'Nueva Lectura' : '✨ Revelar Destino'}
           </button>
 
           <button
             onClick={() => navigate('/history')}
-            className="px-6 sm:px-8 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-[#880E4F]/30 bg-white/10 text-[#880E4F] hover:bg-white/30 flex items-center gap-2 shadow-sm"
+            className="px-8 sm:px-10 py-3 sm:py-3.5 rounded-full uppercase text-sm sm:text-base font-semibold tracking-wide transition-all border-2 border-[#880E4F] bg-white text-[#880E4F] hover:bg-[#fde8EE] flex items-center gap-2 shadow-md"
           >
             📜 Historial
           </button>
@@ -128,11 +128,11 @@ export const CardReading = () => {
           <button
             onClick={handleSaveReading}
             disabled={isSaving || hasSaved}
-            className={`px-10 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border
+            className={`px-8 sm:px-10 py-3 sm:py-3.5 rounded-full uppercase text-sm sm:text-base font-semibold tracking-wide transition-all border-2 shadow-md
               ${hasSaved
-                ? 'bg-green-100/40 border-green-700/30 text-green-800 cursor-default'
-                : 'bg-[#F48FB1]/40 border-[#880E4F]/30 text-[#880E4F] hover:bg-[#F48FB1]/60'}
-              disabled:cursor-not-allowed`}
+                ? 'bg-green-700 border-green-700 text-white cursor-default'
+                : 'bg-[#880E4F] border-[#880E4F] text-white hover:bg-[#6d0b3e]'}
+              disabled:cursor-not-allowed disabled:opacity-80`}
           >
             {hasSaved ? '✓ Lectura guardada' : isSaving ? 'Guardando...' : '💾 Guardar Lectura'}
           </button>
