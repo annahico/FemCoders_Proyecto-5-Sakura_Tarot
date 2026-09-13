@@ -2,13 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { TarotContext } from './TarotContext';
 import { sakuraApi } from '../services/sakuraApi';
 import { readingApi } from '../services/readingApi';
-import axios from 'axios';
-import { APP_API_URL } from '../services/apiConfig';
 import { AlertDisplay } from '../components/molecules/AlertDisplay';
 
 const api = sakuraApi();
 const readings = readingApi();
-const url = `${APP_API_URL}/readings`;
 
 export const TarotProvider = ({ children }) => {
     const [deck, setDeck] = useState([]);
@@ -42,10 +39,13 @@ export const TarotProvider = ({ children }) => {
     const fetchHistory = useCallback(async () => {
         setIsLoadingHistory(true);
         try {
-            const response = await axios.get(url);
-            if (response.data) {
-                setHistory(response.data);
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) {
+                setHistory([]);
+                return;
             }
+            const userReadings = await readings.getReadingsByUserId(user.id);
+            setHistory(userReadings);
         } catch (error) {
             console.error("Error cargando historial:", error);
             setAlertMessage("No se pudo cargar el historial. Inténtalo de nuevo más tarde.");
