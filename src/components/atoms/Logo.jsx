@@ -1,5 +1,5 @@
 import React from 'react'
-import logoImg from '../../assets/images/LogoSolyLuna.png'
+import logoImg from '../../assets/images/LogoSolyLuna.webp'
 
 export const Logo = () => {
   return (
