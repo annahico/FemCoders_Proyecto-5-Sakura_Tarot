@@ -53,14 +53,16 @@ export function HistoryPage() {
       {alertMessage && <AlertDisplay message={alertMessage} />}
       <div className="w-full max-w-6xl rounded-3xl bg-white/40 backdrop-blur-xl shadow-2xl p-6 md:p-10 overflow-y-auto max-h-[90vh]">
         
-        <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <header className="sticky top-0 z-20 -mx-6 md:-mx-10 px-6 md:px-10 py-3 mb-8 bg-white/40 backdrop-blur-xl rounded-b-2xl flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <h1 className="text-2xl md:text-3xl font-bold text-pink-900">El Amanecer Mágico</h1>
             <p className="text-sm text-pink-700 italic">Tu cronología mística</p>
           </div>
-          
-          <button 
+
+          <button
             onClick={() => navigate('/')}
+            aria-label="Volver al inicio"
+            title="Volver al inicio"
             className="bg-white/60 p-3 rounded-full shadow-lg hover:scale-110 transition-transform text-2xl"
           >
             ⭐
