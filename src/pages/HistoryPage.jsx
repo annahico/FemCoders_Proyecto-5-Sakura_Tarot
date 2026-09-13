@@ -11,6 +11,7 @@ export function HistoryPage() {
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedReading, setSelectedReading] = useState(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   useEffect(() => {
     if (alertMessage) {
@@ -33,19 +34,15 @@ export function HistoryPage() {
   };
 
   const handleClearAll = async () => {
-    // window.confirm se mantiene aquí a propósito: es una acción destructiva
-    // irreversible y los componentes Alert/AlertDisplay del proyecto son solo
-    // informativos (no tienen botones de confirmar/cancelar).
-    if (window.confirm("¿Estás seguro de que quieres borrar todo el historial?")) {
-      try {
-        const deletePromises = history.map((item) => readings.deleteReading(item.id));
-        await Promise.allSettled(deletePromises);
-        setHistory([]);
-        setAlertMessage("Historial eliminado");
-      } catch (error) {
-        console.error("Error al limpiar historial:", error);
-        setAlertMessage("No se pudo limpiar el historial. Inténtalo de nuevo.");
-      }
+    setShowClearConfirm(false);
+    try {
+      const deletePromises = history.map((item) => readings.deleteReading(item.id));
+      await Promise.allSettled(deletePromises);
+      setHistory([]);
+      setAlertMessage("Historial eliminado");
+    } catch (error) {
+      console.error("Error al limpiar historial:", error);
+      setAlertMessage("No se pudo limpiar el historial. Inténtalo de nuevo.");
     }
   };
 
@@ -114,7 +111,7 @@ export function HistoryPage() {
                       onClick={(e) => handleDeleteOne(item.id, e)}
                       aria-label="Eliminar lectura"
                       title="Eliminar lectura"
-                      className="bg-red-100/50 p-2 rounded-full text-red-600 hover:bg-red-500 hover:text-white transition-colors"
+                      className="bg-red-100 p-2 rounded-full text-red-700 hover:bg-red-600 hover:text-white transition-colors"
                     >
                       🗑️
                     </button>
@@ -130,8 +127,8 @@ export function HistoryPage() {
 
         {history.length > 0 && (
           <div className="flex justify-center mt-10">
-            <button 
-              onClick={handleClearAll}
+            <button
+              onClick={() => setShowClearConfirm(true)}
               className="px-10 py-3 rounded-full bg-pink-800 text-white font-bold shadow-lg hover:bg-pink-900 transition-colors uppercase tracking-widest text-sm"
             >
               🧹 Limpiar historial
@@ -183,6 +180,36 @@ export function HistoryPage() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showClearConfirm && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 flex items-center justify-center p-4"
+          onClick={() => setShowClearConfirm(false)}
+        >
+          <div
+            className="w-full max-w-sm bg-[#fde8EE] rounded-2xl px-6 sm:px-10 py-6 shadow-2xl text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-[#6a4a4a] text-base sm:text-lg font-medium mb-6">
+              ¿Estás segura de que quieres borrar todo el historial? Esta acción no se puede deshacer.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <button
+                onClick={() => setShowClearConfirm(false)}
+                className="px-6 py-2.5 rounded-full uppercase text-sm font-semibold tracking-wide border-2 border-[#880E4F] bg-white text-[#880E4F] hover:bg-[#fde8EE] transition-all"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleClearAll}
+                className="px-6 py-2.5 rounded-full uppercase text-sm font-semibold tracking-wide border-2 border-red-700 bg-red-700 text-white hover:bg-red-800 transition-all"
+              >
+                Borrar todo
+              </button>
             </div>
           </div>
         </div>
