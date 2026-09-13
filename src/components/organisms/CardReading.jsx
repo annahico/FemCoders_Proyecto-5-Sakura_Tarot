@@ -10,14 +10,10 @@ export const CardReading = () => {
   const [hasSaved, setHasSaved] = useState(false);
   const revealedSectionRef = useRef(null);
 
-  // A new reading resets isRevealed to false (see revealReading in
-  // TarotProvider), so use that to also reset the "already saved" flag.
   useEffect(() => {
     if (!isRevealed) setHasSaved(false);
   }, [isRevealed]);
 
-  // Once the reading is revealed, scroll down to it instead of leaving
-  // the user looking at the (now mostly irrelevant) face-down deck.
   useEffect(() => {
     if (isRevealed && selectedCards.length === 3) {
       revealedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -34,8 +30,8 @@ export const CardReading = () => {
     try {
       await saveReading(user.id, user.username);
       setHasSaved(true);
-    } catch {
-      // saveReading already surfaces an error message via TarotProvider's alert
+    } catch (error) {
+      void error;
     } finally {
       setIsSaving(false);
     }

@@ -12,8 +12,6 @@ export const HomePage = () => {
     if (type === 'history') {
       navigate('/history');
     } else if (user) {
-      // Ya hay sesión iniciada: ir directo a la lectura en vez de
-      // forzar otra vez el formulario de registro/login.
       navigate('/tarot');
     } else {
       setShowForm(true);
@@ -22,8 +20,6 @@ export const HomePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    // Recarga completa para que todo el estado en memoria (contexto,
-    // formularios) se reinicie limpio en vez de quedar a medias.
     window.location.href = '/';
   };
 

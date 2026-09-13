@@ -1,4 +1,3 @@
-// src/components/organisms/HomeIcons.jsx
 import React from 'react';
 import { Logo } from '../atoms/Logo';
 import { ReadingIcon } from '../atoms/ReadingIcon';

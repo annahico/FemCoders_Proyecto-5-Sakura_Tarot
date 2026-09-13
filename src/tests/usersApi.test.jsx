@@ -10,7 +10,6 @@ describe('usersApi', () => {
   });
 
   it('registerUser never sends the plaintext password to the API', async () => {
-    // No existing user with this email.
     axios.get.mockResolvedValueOnce({ data: [] });
     axios.post.mockImplementationOnce((url, body) => Promise.resolve({ data: { id: '1', ...body } }));
 
@@ -36,7 +35,6 @@ describe('usersApi', () => {
   });
 
   it('loginUser succeeds with the correct password', async () => {
-    // Register first, to get a real hash+salt pair.
     axios.get.mockResolvedValueOnce({ data: [] });
     let storedUser;
     axios.post.mockImplementationOnce((url, body) => {
