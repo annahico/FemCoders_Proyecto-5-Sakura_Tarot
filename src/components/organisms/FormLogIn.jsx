@@ -40,7 +40,7 @@ export const FormLogin = () => {
       if (response) {
         console.log("✅ Login exitoso:", response);
         localStorage.setItem("user", JSON.stringify({ id: response.id, username: response.username }));
-        setAlertMessage("¡Bienvenida " + response.username + "!");
+        setAlertMessage("¡Bienvenida/o " + response.username + "!");
 
         setTimeout(() => {
           navigate("/tarot");
@@ -56,7 +56,7 @@ export const FormLogin = () => {
     <>
       {alertMessage && <AlertDisplay message={alertMessage} />}
       <div className="bg-[#fde8EE] w-[90vw] max-w-sm z-30 rounded-2xl px-6 sm:px-10 py-5 flex flex-col items-center relative shadow-xl">
-        <h1 className="text-[#6a4a4a] text-2xl font-semibold p-2">Bienvenida</h1>
+        <h1 className="text-[#6a4a4a] text-2xl font-semibold p-2">Bienvenida/o</h1>
         <form onSubmit={handleSubmit}>
           <FormInputsLogIn form={form} handleChange={handleChange} />
           <div className="flex justify-center">

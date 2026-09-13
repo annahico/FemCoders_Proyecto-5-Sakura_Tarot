@@ -42,7 +42,7 @@ describe('FormLogin Unit Test', () => {
         await user.type(screen.getByPlaceholderText(/password/i), '123456');
         await user.click(screen.getByRole('button', { name: /Iniciar Session/i }));
 
-        const welcomeMessage = await screen.findByText(/¡Bienvenida Sakura!/i);
+        const welcomeMessage = await screen.findByText(/¡Bienvenida\/o Sakura!/i);
         
         expect(welcomeMessage).toBeTruthy();
     });
