@@ -39,10 +39,11 @@ export const FormLogin = () => {
       
       if (response) {
         console.log("✅ Login exitoso:", response);
+        localStorage.setItem("user", JSON.stringify({ id: response.id, username: response.username }));
         setAlertMessage("¡Bienvenida " + response.username + "!");
-        
+
         setTimeout(() => {
-          navigate("/tarot"); 
+          navigate("/tarot");
         }, 2000);
       }
     } catch (error) {

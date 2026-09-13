@@ -27,8 +27,14 @@ export const sakuraApi = () => {
   const getRandomCards = async (count = 10) => {
     try {
       const allCards = await getAllCards();
-      const shuffled = allCards.sort(() => Math.random() - 0.5).slice(0, count);
-      return shuffled;
+      // Fisher-Yates: sort(() => Math.random() - 0.5) is biased and not a
+      // true uniform shuffle.
+      const shuffled = [...allCards];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, count);
     } catch (error) {
       console.error("Error obteniendo cartas aleatorias:", error);
       throw error;

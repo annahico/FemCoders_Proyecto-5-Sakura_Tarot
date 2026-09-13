@@ -43,10 +43,11 @@ export const FormRegister = () => {
     try {
       const response = await registerUser(form);
       console.log(" Usuario registrado:", response);
+      localStorage.setItem("user", JSON.stringify({ id: response.id, username: response.username }));
       setAlertMessage("¡Registro exitoso! Te estamos redirigiendo a la página....");
-      
+
       setTimeout(() => {
-        navigate("/tarot"); 
+        navigate("/tarot");
       }, 2000);
 
     } catch (error) {

@@ -4,10 +4,11 @@ import { useTarot } from '../../context/TarotContext';
 import { Cards } from '../atoms/Cards';
 
 export const CardReading = () => {
-  const { deck, selectedCards, handleSelect, revealReading, isRevealed } = useTarot();
+  const { deck, selectedCards, handleSelect, revealReading, isRevealed, isLoadingDeck } = useTarot();
   const navigate = useNavigate();
 
-  if (!deck || deck.length === 0) return <p className="text-[#880E4F]">Cargando mazo mágico...</p>;
+  if (isLoadingDeck) return <p className="text-[#880E4F]">✨ Cargando mazo mágico...</p>;
+  if (!deck || deck.length === 0) return <p className="text-[#880E4F]">No se pudo cargar el mazo. Inténtalo de nuevo más tarde.</p>;
 
   return (
     <div className="w-full max-w-6xl flex flex-col items-center gap-12 relative">

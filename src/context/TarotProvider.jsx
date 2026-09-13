@@ -4,6 +4,7 @@ import { sakuraApi } from '../services/sakuraApi';
 import { readingApi } from '../services/readingApi';
 import axios from 'axios';
 import { APP_API_URL } from '../services/apiConfig';
+import { AlertDisplay } from '../components/molecules/AlertDisplay';
 
 const api = sakuraApi();
 const readings = readingApi();
@@ -14,17 +15,32 @@ export const TarotProvider = ({ children }) => {
     const [selectedCards, setSelectedCards] = useState([]);
     const [isRevealed, setIsRevealed] = useState(false);
     const [history, setHistory] = useState([]);
+    const [isLoadingDeck, setIsLoadingDeck] = useState(true);
+    const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+    const [alertMessage, setAlertMessage] = useState("");
+
+    useEffect(() => {
+        if (alertMessage) {
+            const timer = setTimeout(() => setAlertMessage(""), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [alertMessage]);
 
     const initGame = useCallback(async () => {
+        setIsLoadingDeck(true);
         try {
-            const cards = await api.getRandomCards(10); 
+            const cards = await api.getRandomCards(10);
             setDeck(cards);
         } catch (error) {
             console.error("Error cargando cartas:", error);
+            setAlertMessage("No se pudieron cargar las cartas. Inténtalo de nuevo más tarde.");
+        } finally {
+            setIsLoadingDeck(false);
         }
     }, []);
 
     const fetchHistory = useCallback(async () => {
+        setIsLoadingHistory(true);
         try {
             const response = await axios.get(url);
             if (response.data) {
@@ -32,6 +48,9 @@ export const TarotProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Error cargando historial:", error);
+            setAlertMessage("No se pudo cargar el historial. Inténtalo de nuevo más tarde.");
+        } finally {
+            setIsLoadingHistory(false);
         }
     }, []);
 
@@ -57,10 +76,11 @@ export const TarotProvider = ({ children }) => {
             };
             const savedReading = await readings.saveReading(userId, username, cards);
             setHistory(prev => [...prev, savedReading]);
-            alert("✨ Lectura guardada en el historial mágico");
+            setAlertMessage("✨ Lectura guardada en el historial mágico");
             return savedReading;
         } catch (error) {
             console.error("Error en saveReading:", error.message);
+            setAlertMessage("No se pudo guardar la lectura. Inténtalo de nuevo.");
             throw error;
         }
     };
@@ -73,9 +93,9 @@ export const TarotProvider = ({ children }) => {
 
     const revealReading = () => {
         if (isRevealed) {
-            setSelectedCards([]); 
-            setIsRevealed(false); 
-            initGame();            
+            setSelectedCards([]);
+            setIsRevealed(false);
+            initGame();
         } else {
             if (selectedCards.length === 3) setIsRevealed(true);
         }
@@ -90,10 +110,12 @@ export const TarotProvider = ({ children }) => {
     };
 
     return (
-        <TarotContext.Provider value={{ 
+        <TarotContext.Provider value={{
             deck, selectedCards, isRevealed, history,
-            setHistory, handleSelect, revealReading, getCardLabel, saveReading 
+            isLoadingDeck, isLoadingHistory,
+            setHistory, handleSelect, revealReading, getCardLabel, saveReading
         }}>
+            {alertMessage && <AlertDisplay message={alertMessage} />}
             {children}
         </TarotContext.Provider>
     );

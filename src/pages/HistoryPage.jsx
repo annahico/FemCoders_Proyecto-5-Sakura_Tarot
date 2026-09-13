@@ -1,32 +1,47 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TarotContext } from '../context/TarotContext';
 import { useNavigate } from 'react-router-dom';
 import { readingApi } from '../services/readingApi';
+import { AlertDisplay } from '../components/molecules/AlertDisplay';
 
 const readings = readingApi();
 
 export function HistoryPage() {
-  const { history, setHistory } = useContext(TarotContext);
+  const { history, setHistory, isLoadingHistory } = useContext(TarotContext);
   const navigate = useNavigate();
+  const [alertMessage, setAlertMessage] = useState("");
+
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => setAlertMessage(""), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
 
   const handleDeleteOne = async (id) => {
     try {
       await readings.deleteReading(id);
       setHistory(prev => prev.filter(item => item.id !== id));
-      alert("Lectura eliminada");
+      setAlertMessage("Lectura eliminada");
     } catch (error) {
       console.error("Error al borrar:", error);
+      setAlertMessage("No se pudo eliminar la lectura. Inténtalo de nuevo.");
     }
   };
 
   const handleClearAll = async () => {
+    // window.confirm se mantiene aquí a propósito: es una acción destructiva
+    // irreversible y los componentes Alert/AlertDisplay del proyecto son solo
+    // informativos (no tienen botones de confirmar/cancelar).
     if (window.confirm("¿Estás seguro de que quieres borrar todo el historial?")) {
       try {
         const deletePromises = history.map((item) => readings.deleteReading(item.id));
         await Promise.allSettled(deletePromises);
         setHistory([]);
+        setAlertMessage("Historial eliminado");
       } catch (error) {
         console.error("Error al limpiar historial:", error);
+        setAlertMessage("No se pudo limpiar el historial. Inténtalo de nuevo.");
       }
     }
   };
@@ -36,6 +51,7 @@ export function HistoryPage() {
       className="min-h-screen w-full flex flex-col items-center bg-cover bg-center p-4 md:p-10"
       style={{ backgroundImage: "url('/ebeeaf4c-022f-401d-a7fa-62eb2ed7f2e9.png')" }}
     >
+      {alertMessage && <AlertDisplay message={alertMessage} />}
       <div className="w-full max-w-6xl rounded-3xl bg-white/40 backdrop-blur-xl shadow-2xl p-6 md:p-10 overflow-y-auto max-h-[90vh]">
         
         <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -52,7 +68,9 @@ export function HistoryPage() {
           </button>
         </header>
 
-        {history.length === 0 ? (
+        {isLoadingHistory ? (
+          <p className="text-center text-pink-800 py-20 italic text-lg">✨ Cargando tu historial...</p>
+        ) : history.length === 0 ? (
           <p className="text-center text-pink-800 py-20 italic text-lg">No tienes lecturas guardadas.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
