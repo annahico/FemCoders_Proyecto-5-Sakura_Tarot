@@ -1,5 +1,8 @@
-// Base URL for the users/readings backend (json-server in local dev).
-// In production, set VITE_API_URL in the hosting provider's env vars to a
-// publicly reachable backend — localhost:3000 only exists on a developer's
-// own machine, so it can never work for visitors of the deployed site.
-export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// Sakura tarot cards live in the original mockapi.io project.
+export const CARDS_API_URL = "https://6388b6e5a4bb27a7f78f96a5.mockapi.io";
+
+// Users and readings live in a separate mockapi.io project ("prueba").
+// Both are real, publicly reachable endpoints (unlike a local json-server),
+// so they work from any visitor's browser once the app is deployed — no
+// env var / local server needed.
+export const APP_API_URL = "https://66926d8d346eeafcf46ce2a5.mockapi.io";

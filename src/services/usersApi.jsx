@@ -1,8 +1,8 @@
 import axios from "axios";
-import { API_BASE_URL } from "./apiConfig";
+import { APP_API_URL } from "./apiConfig";
 
 export const usersApi = () => {
-  const url = `${API_BASE_URL}/users`;
+  const url = `${APP_API_URL}/users`;
 
   const createReadableDate = () => {
     const now = new Date();

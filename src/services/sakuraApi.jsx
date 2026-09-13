@@ -1,7 +1,8 @@
 import axios from "axios";
+import { CARDS_API_URL } from "./apiConfig";
 
 export const sakuraApi = () => {
-  const url = "https://6388b6e5a4bb27a7f78f96a5.mockapi.io/sakura-cards";
+  const url = `${CARDS_API_URL}/sakura-cards`;
 
   const getAllCards = async () => {
     try {
