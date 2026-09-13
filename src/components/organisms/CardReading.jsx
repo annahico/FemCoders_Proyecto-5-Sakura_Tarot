@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTarot } from '../../context/TarotContext';
 import { Cards } from '../atoms/Cards';
 
 export const CardReading = () => {
-  const { deck, selectedCards, handleSelect, revealReading, isRevealed, isLoadingDeck } = useTarot();
+  const { deck, selectedCards, handleSelect, revealReading, isRevealed, isLoadingDeck, saveReading } = useTarot();
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
+
+  // A new reading resets isRevealed to false (see revealReading in
+  // TarotProvider), so use that to also reset the "already saved" flag.
+  useEffect(() => {
+    if (!isRevealed) setHasSaved(false);
+  }, [isRevealed]);
+
+  const handleSaveReading = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await saveReading(user.id, user.username);
+      setHasSaved(true);
+    } catch {
+      // saveReading already surfaces an error message via TarotProvider's alert
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (isLoadingDeck) return <p className="text-[#880E4F]">✨ Cargando mazo mágico...</p>;
   if (!deck || deck.length === 0) return <p className="text-[#880E4F]">No se pudo cargar el mazo. Inténtalo de nuevo más tarde.</p>;
@@ -85,6 +110,22 @@ export const CardReading = () => {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {isRevealed && selectedCards.length === 3 && (
+        <div className="flex justify-center -mt-6 pb-4">
+          <button
+            onClick={handleSaveReading}
+            disabled={isSaving || hasSaved}
+            className={`px-10 py-2 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border
+              ${hasSaved
+                ? 'bg-green-100/40 border-green-700/30 text-green-800 cursor-default'
+                : 'bg-[#F48FB1]/40 border-[#880E4F]/30 text-[#880E4F] hover:bg-[#F48FB1]/60'}
+              disabled:cursor-not-allowed`}
+          >
+            {hasSaved ? '✓ Lectura guardada' : isSaving ? 'Guardando...' : '💾 Guardar Lectura'}
+          </button>
         </div>
       )}
     </div>
