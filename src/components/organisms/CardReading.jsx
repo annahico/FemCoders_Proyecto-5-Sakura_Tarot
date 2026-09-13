@@ -101,11 +101,11 @@ export const CardReading = () => {
                 <span className="text-[#880E4F] text-xs uppercase tracking-[0.3em] mb-8 font-semibold">
                   ✦ {labels[tiempo]}
                 </span>
-                <div className="scale-110 mb-6">
-                  <Cards card={card} isRevealed={true} />
+                <div className="mb-6">
+                  <Cards card={card} isRevealed={true} size="w-40 h-64 sm:w-48 sm:h-80 md:w-56 md:h-96" />
                 </div>
-                <h3 className="text-[#880E4F] font-serif text-xl mb-3">{card.spanishName}</h3>
-                <p className="text-[#880E4F]/90 text-[13px] text-center leading-relaxed italic px-2">
+                <h3 className="text-[#880E4F] font-serif text-2xl mb-3">{card.spanishName}</h3>
+                <p className="text-[#880E4F]/90 text-sm sm:text-base text-center leading-relaxed italic px-2">
                   {card.meaning}
                 </p>
               </div>
