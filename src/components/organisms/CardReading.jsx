@@ -41,15 +41,16 @@ export const CardReading = () => {
       <div className="w-full flex justify-end px-2 sm:px-6 md:px-10">
         <button
           onClick={() => navigate('/')}
-          className="bg-white/40 p-3 rounded-full text-2xl hover:scale-125 transition-transform shadow-lg border border-white/50"
+          aria-label="Volver al Inicio"
           title="Volver al Inicio"
+          className="bg-white/40 p-3 rounded-full text-2xl hover:scale-125 transition-transform shadow-lg border border-white/50"
         >
           ⭐
         </button>
       </div>
 
       <div className="bg-white/10 backdrop-blur-md rounded-[40px] p-4 sm:p-6 md:p-10 border border-white/20 shadow-2xl w-full">
-        <p className="text-[#880E4F] mb-8 text-center font-medium italic">
+        <p className="text-[#880E4F] mb-8 mx-auto w-fit bg-white/90 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 text-center font-medium italic shadow">
           Elige 3 cartas para conocer tu destino:
         </p>
 
