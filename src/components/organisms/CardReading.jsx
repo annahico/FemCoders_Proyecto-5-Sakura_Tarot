@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTarot } from '../../context/TarotContext';
 import { Cards } from '../atoms/Cards';
@@ -8,12 +8,21 @@ export const CardReading = () => {
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
+  const revealedSectionRef = useRef(null);
 
   // A new reading resets isRevealed to false (see revealReading in
   // TarotProvider), so use that to also reset the "already saved" flag.
   useEffect(() => {
     if (!isRevealed) setHasSaved(false);
   }, [isRevealed]);
+
+  // Once the reading is revealed, scroll down to it instead of leaving
+  // the user looking at the (now mostly irrelevant) face-down deck.
+  useEffect(() => {
+    if (isRevealed && selectedCards.length === 3) {
+      revealedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [isRevealed, selectedCards.length]);
 
   const handleSaveReading = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -65,7 +74,7 @@ export const CardReading = () => {
                 : 'hover:-translate-y-2'
               }`}
             >
-              <Cards card={card} isRevealed={false} />
+              <Cards card={card} isRevealed={false} size="w-28 h-44 sm:w-32 sm:h-52 lg:w-36 lg:h-60" />
             </div>
           ))}
         </div>
@@ -92,7 +101,7 @@ export const CardReading = () => {
       </div>
 
       {isRevealed && selectedCards.length === 3 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 w-full mt-10 animate-fade-in pb-20">
+        <div ref={revealedSectionRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 w-full mt-10 scroll-mt-6 animate-fade-in pb-20">
           {['past', 'present', 'future'].map((tiempo, index) => {
             const card = selectedCards[index];
             const labels = { past: 'Pasado', present: 'Presente', future: 'Futuro' };
